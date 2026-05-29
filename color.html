@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Hero / Base / Accent Palette Preview</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, Arial, sans-serif;
+    background: #fafafa;
+  }
+
+  .controls {
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  label { display: flex; flex-direction: column; font-size: 13px; }
+  input { padding: 6px 8px; font-size: 14px; width: 110px; }
+
+  .hero {
+    height: 200px;
+    padding: 24px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .hero .accent-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .base {
+    min-height: 300px;
+    padding: 24px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .accent-tag {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="controls">
+  <label>Hero (Color 1)
+    <input id="c1" value="#1e90ff">
+  </label>
+  <label>Base (Color 2)
+    <input id="c2" value="#f2f2f2">
+  </label>
+  <label>Accent (Color 3)
+    <input id="c3" value="#ffb703">
+  </label>
+</div>
+
+<section class="hero" id="hero">
+  <h2 id="heroLabel">Hero Section</h2>
+  <span class="accent-btn" id="accentBtn">Accent Button</span>
+</section>
+
+<section class="base" id="base">
+  <h3>Base Area</h3>
+
+  <div class="card">
+    This is sample content on the base background.
+    <div class="accent-tag" id="accentTag">Accent Tag</div>
+  </div>
+</section>
+
+<script>
+  const ids = {
+    hero: document.getElementById("hero"),
+    base: document.getElementById("base"),
+    btn: document.getElementById("accentBtn"),
+    tag: document.getElementById("accentTag")
+  };
+
+  const inputs = ["c1","c2","c3"].map(id => document.getElementById(id));
+
+  function valid(v){ return /^#?[0-9a-f]{6}$/i.test(v.trim()); }
+  function norm(v){ v=v.trim(); return v.startsWith("#")?v:"#"+v; }
+
+  function update(){
+    const [h,b,a] = inputs.map(i=>i.value);
+
+    if(valid(h)) ids.hero.style.background = norm(h);
+    if(valid(b)) ids.base.style.background = norm(b);
+    if(valid(a)) {
+      const x = norm(a);
+      ids.btn.style.background = x;
+      ids.tag.style.background = x;
+      ids.btn.style.color = "#000";
+      ids.tag.style.color = "#000";
+    }
+  }
+
+  inputs.forEach(i => i.addEventListener("input", update));
+  update();
+</script>
+
+</body>
+</html>
